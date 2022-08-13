@@ -1,0 +1,3 @@
+*.img*
+*Image*
+**/*/initramfs_srcdir
