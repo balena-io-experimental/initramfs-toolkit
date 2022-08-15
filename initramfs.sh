@@ -114,9 +114,8 @@ install_module() {
 
 	outdir_abs="$(readlink -f "${outdir}")"
 	(cd "${rootdir}" && cp -v --parents "${path}" "${outdir_abs}"/)
-	(cd "${rootdir}" && cp -v --parents \
-		"$(find . -name modules.dep)" \
-		"${outdir_abs}")
+	(cd "${rootdir}" && for f in lib/modules/*/modules.*; do
+		cp -v --parents "$f" "${outdir_abs}"; done)
 }
 
 populate_initramfs() {
