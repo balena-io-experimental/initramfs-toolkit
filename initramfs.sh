@@ -38,14 +38,19 @@ install_binary() {
 	local src
 	local dest
 
-	search_paths=$(for d in $bin_dirs $lib_dirs; do echo -n "${rootdir}${d} "; done)
+	is_lib() { [[ $1 == *.so* ]] || return 1; }
+	search_paths=$(
+		for d in $(is_lib "$binary" \
+				&& echo "$lib_dirs" \
+				|| echo "$bin_dirs"); do
+			echo -n "${rootdir}${d} "; done)
+	# shellcheck disable=SC2086
 	path="$(find ${search_paths} \
-			-maxdepth 1 \
+			-maxdepth "$(is_lib "$binary" && echo 2 || echo 1)" \
 			-name "${binary}" \
 			-print \
 			-quit \
-			2>/dev/null \
-		)"
+			2>/dev/null )"
 	if [ -z "${path}" ]; then
 		echo "Unable to find binary: '${binary}'"
 		exit 1;
