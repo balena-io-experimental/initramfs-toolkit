@@ -36,7 +36,7 @@ if mountpoint "${mount_path}" > /dev/null; then
 fi
 
 if [ ! -f "${image_path}" ]; then
-	wget "https://api.balena-cloud.com/download?deviceType=generic-aarch64&version=4.0.28" \
+	wget "https://api.balena-cloud.com/download?deviceType=generic-aarch64&version=4.0.28&developmentMode=true" \
 		-O "${image_path}.gz"
 	gunzip "${image_path}.gz"
 
