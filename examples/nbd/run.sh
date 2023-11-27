@@ -36,7 +36,7 @@ if mountpoint "${mount_path}" > /dev/null; then
 fi
 
 if [ ! -f "${image_path}" ]; then
-	wget https://api.balena-cloud.com/download?deviceType=generic-aarch64 \
+	wget "https://api.balena-cloud.com/download?deviceType=generic-aarch64&version=4.0.28" \
 		-O "${image_path}.gz"
 	gunzip "${image_path}.gz"
 
@@ -64,7 +64,7 @@ populate_initramfs "${utils[*]}" \
 # Debian container that we'll steal it from. Note that the container image
 # needs a glibc version equal or newer than the one in our initramfs.
 if [ ! -f "${initramfs_srcdir}/bin/nbd-client" ]; then
-	image_tag=debian:bookworm-slim@sha256:2c7e2451a81e3de90dcc5a8505ff9720ebbdfe940fa6845f8676df98c8c0780f
+	image_tag=debian:trixie-slim@sha256:d502ed36b80ac52722093dbb07824d2b262beaab161384ed60bd6f513bf6f99f
 	container_id=$(docker run -d "${image_tag}" sleep infinity)
 	docker exec -it "${container_id}" \
 		/bin/sh -c "apt update && apt install -y nbd-client"
